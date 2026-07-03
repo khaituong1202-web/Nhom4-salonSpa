@@ -9,7 +9,26 @@ function initializeSampleData() {
   
   if (!existingData) {
     const sampleData = [
-    
+      {
+        id: 1,
+        name: "Nguyễn Thị A",
+        email: "nguyenthia@email.com",
+        phone: "0912345678",
+        service: "Cắt tóc",
+        notes: "Muốn cắt tóc ngắn",
+        date: new Date().toISOString(),
+        status: "Chờ xác nhận"
+      },
+      {
+        id: 2,
+        name: "Trần Văn B",
+        email: "tranvanb@email.com",
+        phone: "0987654321",
+        service: "Massage",
+        notes: "Đau vai gáy",
+        date: new Date().toISOString(),
+        status: "Đã xác nhận"
+      }
     ];
     
     localStorage.setItem(DATA_KEY, JSON.stringify(sampleData));
@@ -32,7 +51,7 @@ function saveBooking(formData) {
     email: formData.email,
     phone: formData.phone,
     service: formData.service,
-    notes: formData.notes,
+    notes: formData.notes || '',
     date: new Date().toISOString(),
     status: 'Chờ xác nhận'
   };
@@ -107,6 +126,8 @@ function clearAllData() {
 // Show message
 function showMessage(msg, type) {
   const messageEl = document.getElementById('message');
+  if (!messageEl) return;
+  
   messageEl.textContent = msg;
   messageEl.className = `form-message form-message-${type}`;
   messageEl.style.display = 'block';
@@ -121,6 +142,7 @@ function showMessage(msg, type) {
 // Initialize form
 function initializeForm() {
   const form = document.getElementById('contactForm');
+  if (!form) return;
   
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -161,10 +183,16 @@ function initializeForm() {
   });
   
   // Export button
-  document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportToExcel);
+  }
   
   // Clear button
-  document.getElementById('clearBtn').addEventListener('click', clearAllData);
+  const clearBtn = document.getElementById('clearBtn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', clearAllData);
+  }
 }
 
 // Email validation
@@ -179,6 +207,12 @@ function isValidPhone(phone) {
   return re.test(phone);
 }
 
+// Initialize newsletter
+function initializeNewsletter() {
+  // Newsletter functionality - can be extended later
+  console.log('📰 Newsletter feature ready');
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize sample data
@@ -186,15 +220,10 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize form
   initializeForm();
-  
-  // Initialize back-to-top button
-  initializeBackToTop();
-  
+
   // Initialize newsletter
   initializeNewsletter();
   
   console.log('✅ NGÂN Spa & Salon - Hệ thống quản lý đặt lịch đã khởi động!');
   console.log('📊 Dữ liệu hiện tại:', getBookings());
 });
-
-
